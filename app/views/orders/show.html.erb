@@ -6,6 +6,7 @@
 
   <div class="order-summary jumbotron">
     <h4>Thank you for your order!</h4>
+    <h5>Email used for this order: <%= @order.email %></h5>
 
     <table class="table table-bordered">
     <thead>
@@ -17,7 +18,7 @@
       </tr>
     </thead>
     <tbody>
-        <%= Line_items %>
+        <%= render "line_item" %>
     </tbody>
     <tfoot>
       <tr>
