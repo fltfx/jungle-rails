@@ -48,7 +48,7 @@ class OrdersController < ApplicationController
       order.line_items.new(
         product: product,
         quantity: quantity,
-        item_price: product.price,
+        item_price: product.price, #humanized_money_with_symbol number_with_precision(product.price, precision: 2), product.price
         total_price: product.price * quantity
       )
     end
