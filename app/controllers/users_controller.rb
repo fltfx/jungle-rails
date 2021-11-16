@@ -12,6 +12,16 @@ class UsersController < ApplicationController
     end
   end
 
+  def authenticate_with_credentials(email, password)
+    #check if user exists by checking email address
+    checkUser = User.find_by_email(email)
+    if checkUser && checkUser.authenticate(password)
+      return checkUser
+    else
+      return nil
+    end
+  end
+  
   private
 
   def user_params
