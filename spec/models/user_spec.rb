@@ -54,6 +54,32 @@ RSpec.describe User, type: :model do
       expect(user.save).to eq false
       expect(user).to_not be_valid
     end
+  end
 
+  describe '.authenticate_with_credentials' do
+    it 'should return the authenticated user if providing correct credentials' do
+      user1 = User.new(name: 'Test', email: '123@gmail.com', password: 'abcd', password_confirmation: 'abcd')
+      user1.save
+      user2 = User.authenticate_with_credentials("123@gmail.com", "abcd")
+      expect(user2).to eq user1
+    end
+    it 'should return nil if providing incorrect credentials' do
+      user1 = User.new(name: 'Test', email: '123@gmail.com', password: 'abcd', password_confirmation: 'abcd')
+      user1.save
+      user2 = User.authenticate_with_credentials("123@gmail.com", "123") #wrong password
+      expect(user2).to eq nil
+    end
+    it 'should return the authenticated user if providing correct credentials (including when email has spaces before and/or after)' do
+      user1 = User.new(name: 'Test', email: "example@domain.com", password: 'abcd', password_confirmation: 'abcd')
+      user1.save
+      user2 = User.authenticate_with_credentials(" example@domain.com ", "abcd")
+      expect(user2).to eq user1
+    end
+    it 'should return the authenticated user if providing correct credentials (not case sensitive)' do
+      user1 = User.new(name: 'Test', email: "eXample@domain.COM", password: 'abcd', password_confirmation: 'abcd')
+      user1.save
+      user2 = User.authenticate_with_credentials("EXAMPLe@DOMAIN.CoM", "abcd")
+      expect(user2).to eq user1
+    end
   end
 end
